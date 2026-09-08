@@ -1,0 +1,483 @@
+/* =====================================================================
+   个人名片 stylesheet
+   深色渐变背景 · 玻璃拟态卡片 · 3D 翻转
+   ===================================================================== */
+
+/* ---------- 基础重置 ---------- */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg-1: #0b1026;
+  --bg-2: #1b2a52;
+  --accent: #6c7bff;
+  --accent-2: #38e0b8;
+  --ink: #eaf0ff;
+  --card-w: 480px;
+  --card-h: 300px;
+  --radius: 22px;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei",
+    "Hiragino Sans GB", sans-serif;
+  color: var(--ink);
+  background: linear-gradient(135deg, var(--bg-1) 0%, #14203c 55%, var(--bg-2) 100%);
+  background-attachment: fixed;
+}
+
+::selection {
+  background: rgba(108, 123, 255, 0.35);
+}
+
+/* =====================================================================
+   背景装饰：漂浮光斑 + 网格线
+   ===================================================================== */
+.bg-decor {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: 0.55;
+  animation: drift 22s ease-in-out infinite alternate;
+}
+.blob-1 {
+  width: 420px; height: 420px;
+  left: -80px; top: -60px;
+  background: radial-gradient(circle, #3b4cff 0%, transparent 70%);
+}
+.blob-2 {
+  width: 380px; height: 380px;
+  right: -100px; bottom: -80px;
+  background: radial-gradient(circle, #16e6c0 0%, transparent 70%);
+  animation-delay: -8s;
+}
+.blob-3 {
+  width: 260px; height: 260px;
+  left: 58%; top: 12%;
+  background: radial-gradient(circle, #ff5fa2 0%, transparent 70%);
+  animation-delay: -14s;
+  opacity: 0.35;
+}
+
+@keyframes drift {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to   { transform: translate3d(70px, 50px, 0) scale(1.18); }
+}
+
+.grid-lines {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(circle at 50% 42%, black 60%, transparent 92%);
+}
+/* =====================================================================
+   主舞台
+   ===================================================================== */
+.stage {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 26px;
+  padding: 24px;
+}
+
+/* =====================================================================
+   名片本体（3D 翻转容器）
+   ===================================================================== */
+.card {
+  width: var(--card-w);
+  height: var(--card-h);
+  perspective: 1400px;
+  cursor: pointer;
+  outline: none;
+}
+
+.card:focus-visible {
+  outline: 3px solid rgba(108, 123, 255, 0.6);
+  outline-offset: 6px;
+}
+
+.card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.85s cubic-bezier(0.35, 0.15, 0.5, 1);
+}
+
+.card-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: var(--radius);
+  box-shadow:
+    0 24px 55px rgba(3, 8, 28, 0.55),
+    0 4px 18px rgba(86, 108, 255, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.28);
+  transition: box-shadow 0.4s ease;
+}
+
+/* 悬停时光晕提亮 */
+.card:hover .card-face {
+  box-shadow:
+    0 30px 65px rgba(3, 8, 28, 0.5),
+    0 6px 24px rgba(108, 123, 255, 0.38),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+/* 顶部渐变光带扫过 */
+.card-glow {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 20%, rgba(255, 255, 255, 0.16) 40%, transparent 62%);
+  background-size: 240% 100%;
+  animation: sheen 6s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes sheen {
+  0%, 100% { background-position: 20% 0; }
+  50%      { background-position: 100% 0; }
+}
+
+/* =====================================================================
+   正面
+   ===================================================================== */
+.card-front {
+  color: var(--ink);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 26px 28px;
+  background:
+    radial-gradient(circle at 82% 18%, rgba(124, 140, 255, 0.35) 0%, transparent 55%),
+    radial-gradient(circle at 12% 88%, rgba(56, 224, 184, 0.22) 0%, transparent 50%),
+    linear-gradient(160deg, rgba(20, 32, 70, 0.92), rgba(13, 19, 44, 0.96));
+}
+
+.front-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  font-size: 17px;
+  color: #fff;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  box-shadow: 0 4px 12px rgba(96, 110, 255, 0.45);
+}
+
+.brand-text {
+  font-size: 12px;
+  letter-spacing: 3px;
+  font-weight: 600;
+  color: rgba(234, 240, 255, 0.75);
+  text-transform: uppercase;
+}
+
+/* 头像 */
+.avatar {
+  position: relative;
+  width: 108px;
+  height: 108px;
+  margin: 6px auto 0;
+  border-radius: 34%;
+  padding: 6px;
+  background: linear-gradient(210deg, var(--accent), var(--accent-2), #8ee6ff, var(--accent));
+  box-shadow: 0 0 14px rgba(108, 123, 255, 0.28);
+}
+
+.avatar-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 34%;
+  object-fit: cover;
+  background: rgba(13, 19, 44, 0.9);
+  animation: float-avatar 5s ease-in-out infinite;
+}
+@keyframes float-avatar {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-3px); }
+}
+
+/* 头像加载失败时的兜底 */
+.avatar-fallback {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 34%;
+  object-fit: cover;
+  background: linear-gradient(135deg, #5170ff 0%, #2fb8a0 100%);
+  color: #fff;
+  font-size: 40px;
+  font-weight: 700;
+}
+
+.online-dot {
+  position: absolute;
+  right: 4px;
+  bottom: 6px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #22e08a;
+  border: 2px solid rgba(13, 19, 44, 0.9);
+  box-shadow: 0 0 8px rgba(34, 224, 138, 0.7);
+}
+
+/* 姓名与头衔 */
+.front-info {
+  text-align: center;
+  margin-top: 2px;
+}
+
+.name {
+  font-size: 27px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  background: linear-gradient(90deg, #fff, #d9e2ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.title {
+  font-size: 14.5px;
+  margin-top: 6px;
+  color: rgba(234, 240, 255, 0.92);
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+.slogan {
+  font-size: 12px;
+  margin-top: 7px;
+  color: rgba(214, 227, 255, 0.6);
+  letter-spacing: 0.5px;
+}
+
+.front-foot {
+  margin-top: auto;
+  padding-top: 2px;
+}
+
+.hint {
+  font-size: 12px;
+  color: rgba(214, 227, 255, 0.62);
+  display: block;
+  text-align: center;
+}
+/* =====================================================================
+   背面
+   ===================================================================== */
+.card-back {
+  transform: rotateY(180deg);
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr 128px;
+  gap: 20px;
+  padding: 24px 22px 20px;
+  align-content: start;
+  background:
+    radial-gradient(circle at 15% 6%, rgba(56, 224, 184, 0.3) 0%, transparent 55%),
+    linear-gradient(200deg, rgba(24, 40, 86, 0.95), rgba(14, 22, 50, 0.95));
+}
+
+.back-head h2 {
+  font-size: 18px;
+  letter-spacing: 3px;
+  font-weight: 700;
+  background: linear-gradient(90deg, #eef4ff, #9be8dd);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.back-head .en-sub {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 6px;
+  color: rgba(234, 240, 255, 0.5);
+  text-transform: uppercase;
+  margin-top: 3px;
+}
+
+/* 联系方式表格 */
+.contact-list {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+  display: grid;
+  grid-template-columns: 34px 54px 1fr;
+  gap: 10px 6px;
+  align-items: center;
+}
+
+.contact-list li {
+  display: contents;
+}
+
+.icon {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  font-size: 14px;
+  color: var(--accent);
+  border-radius: 9px;
+  background: rgba(108, 123, 255, 0.14);
+  border: 1px solid rgba(108, 123, 255, 0.35);
+}
+
+.label {
+  font-size: 11px;
+  color: rgba(205, 219, 255, 0.68);
+  letter-spacing: 1px;
+}
+
+.value {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.value:hover {
+  color: #9fc7ff;
+  text-shadow: 0 0 10px rgba(120, 160, 255, 0.35);
+}
+.value.copied {
+  color: #3ef0a8;
+  text-shadow: 0 0 10px rgba(62, 240, 168, 0.45);
+}
+
+/* 二维码 */
+.qrcode-box {
+  grid-row: 1 / -1;
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.qrcode {
+  width: 96px;
+  height: 96px;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+}
+
+.qr-tip {
+  font-size: 10.5px;
+  color: rgba(214, 227, 255, 0.66);
+  letter-spacing: 1px;
+}
+
+/* =====================================================================
+   操作提示
+   ===================================================================== */
+.tip {
+  font-size: 12.5px;
+  color: rgba(214, 227, 255, 0.55);
+  letter-spacing: 1px;
+  transition: opacity 0.35s ease;
+}
+.back-tip {
+  opacity: 0;
+}
+
+/* =====================================================================
+   状态：翻转后
+   ===================================================================== */
+.card.flipped .card-inner {
+  transform: rotateY(180deg);
+}
+
+.card.flipped .front-tip {
+  opacity: 0;
+}
+.card.flipped .back-tip {
+  opacity: 1;
+}
+
+/* =====================================================================
+   响应式
+   ===================================================================== */
+@media (max-width: 540px) {
+  :root {
+    --card-w: 352px;
+    --card-h: 430px;
+  }
+  .card-back {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    gap: 14px;
+    padding: 22px 18px;
+  }
+  .qrcode-box {
+    grid-row: auto;
+    justify-self: end;
+    flex-direction: row;
+    gap: 10px;
+  }
+  .avatar {
+    width: 96px;
+    height: 96px;
+  }
+  .name {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 400px) {
+  :root {
+    --card-w: 320px;
+  }
+}
+
+/* 无障碍：减少动画 */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001s !important;
+    transition-duration: 0.001s !important;
+  }
+}

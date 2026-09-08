@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="个人名片 - 联系方式与简介">
+  <title>个人名片</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- 背景装饰 -->
+  <div class="bg-decor">
+    <span class="blob blob-1"></span>
+    <span class="blob blob-2"></span>
+    <span class="blob blob-3"></span>
+    <div class="grid-lines"></div>
+  </div>
+
+  <main class="stage">
+    <!-- ========== 名片（可翻转） ========== -->
+    <div class="card" id="businessCard" aria-label="名片，点击翻转" tabindex="0">
+      <div class="card-inner">
+      <!-- 正面 -->
+      <div class="card-face card-front">
+        <div class="card-glow"></div>
+
+        <header class="front-head">
+          <div class="logo">◆</div>
+          <span class="brand-text">PERSONAL CARD</span>
+        </header>
+
+        <div class="avatar">
+          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alex&backgroundColor=b6e3f4,c0aede,d1d4f9,f4d6e1"
+               alt="头像" class="avatar-img">
+          <span class="online-dot"></span>
+        </div>
+
+        <div class="front-info">
+          <h1 class="name">张三</h1>
+          <p class="title">全栈开发工程师</p>
+          <p class="slogan">用代码构建更美好的数字世界 ✦</p>
+        </div>
+
+        <footer class="front-foot">
+          <span class="hint">👆 点击卡片查看联系方式</span>
+        </footer>
+      </div>
+
+      <!-- 背面 -->
+      <div class="card-face card-back">
+        <div class="card-glow"></div>
+
+        <header class="back-head">
+          <h2>联系方式</h2>
+          <span class="en-sub">CONTACT</span>
+        </header>
+
+        <ul class="contact-list">
+          <li>
+            <span class="icon icon-mail">✉</span>
+            <span class="label">邮箱</span>
+            <a href="mailto:zhangsan@example.com" class="value" data-copy="zhangsan@example.com">zhangsan@example.com</a>
+          </li>
+          <li>
+            <span class="icon icon-phone">☎</span>
+            <span class="label">电话</span>
+            <a href="tel:+8613800000000" class="value">+86 138 0000 0000</a>
+          </li>
+          <li>
+            <span class="icon icon-site">◉</span>
+            <span class="label">网站</span>
+            <a href="https://example.com" target="_blank" rel="noopener" class="value">www.example.com</a>
+          </li>
+          <li>
+            <span class="icon icon-loc">⚲</span>
+            <span class="label">地址</span>
+            <span class="value">北京 · 朝阳区</span>
+          </li>
+        </ul>
+
+        <div class="qrcode-box" title="扫码添加微信">
+          <!-- 简易二维码占位（可用真实二维码图片替换 src 中的内容） -->
+          <svg class="qrcode" viewBox="0 0 29 29" aria-label="二维码">
+            <rect width="29" height="29" fill="#ffffff"/>
+            <g fill="#0f172a">
+              <rect x="0" y="0" width="7" height="7"/><rect x="22" y="0" width="7" height="7"/>
+              <rect x="0" y="22" width="7" height="7"/>
+              <rect x="2" y="2" width="3" height="3"/><rect x="24" y="2" width="3" height="3"/>
+              <rect x="2" y="24" width="3" height="3"/>
+              <rect x="10" y="10" width="3" height="3"/>
+              <rect x="14" y="14" width="2" height="2"/><rect x="16" y="14" width="1" height="1"/>
+              <rect x="14" y="16" width="2" height="2"/><rect x="17" y="16" width="1" height="1"/>
+              <rect x="10" y="17" width="1" height="1"/><rect x="11" y="18" width="2" height="2"/>
+              <rect x="8" y="10" width="1" height="1"/><rect x="8" y="12" width="1" height="1"/>
+              <rect x="10" y="8" width="1" height="1"/><rect x="12" y="8" width="1" height="1"/>
+              <rect x="7" y="6" width="1" height="1"/><rect x="9" y="6" width="1" height="1"/>
+              <rect x="18" y="8" width="1" height="1"/><rect x="20" y="10" width="1" height="1"/>
+              <rect x="17" y="6" width="2" height="1"/><rect x="18" y="5" width="1" height="1"/>
+            </g>
+          </svg>
+          <span class="qr-tip">扫码联系</span>
+        </div>
+      </div>
+      </div><!-- /card-inner -->
+    </div>
+
+    <!-- 操作提示 -->
+    <p class="tip front-tip">点击名片翻转 · 悬停有惊喜 ✨</p>
+    <p class="tip back-tip">点击名片或按 Esc 返回正面</p>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
